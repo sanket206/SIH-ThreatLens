@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+﻿import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
@@ -6,24 +6,24 @@ import path from 'path';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding PhisherMan Cyber-Void Database...');
+  console.log('Seeding ThreatLens Cyber-Void Database...');
 
   // 1. Seed Default Admin User
-  const passwordHash = await bcrypt.hash('PhisherMan2026!', 10);
+  const passwordHash = await bcrypt.hash('ThreatLens2026!', 10);
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@phisherman.cyber' },
+    where: { email: 'admin@ThreatLens.cyber' },
     update: {},
     create: {
-      email: 'admin@phisherman.cyber',
+      email: 'admin@ThreatLens.cyber',
       name: 'Cyber Immunity Operator',
       passwordHash,
       role: 'ADMIN',
-      avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=PhisherManOperator',
+      avatar: 'https://api.dicebear.com/7.x/identicon/svg?seed=ThreatLensOperator',
       settings: {
         create: {
           autoQuarantine: true,
           scanTimeoutSeconds: 30,
-          alertEmail: 'admin@phisherman.cyber',
+          alertEmail: 'admin@ThreatLens.cyber',
           customRules: JSON.stringify({ blockNewlyRegistered: true, strictSslValidation: true }),
           apiKeys: JSON.stringify({ virustotal: '', abuseipdb: '', openai: '', google_safebrowsing: '' }),
         },
@@ -361,7 +361,7 @@ async function main() {
     await prisma.threatPing.create({ data: ping });
   }
 
-  console.log('Seeding complete! Default login: admin@phisherman.cyber / PhisherMan2026!');
+  console.log('Seeding complete! Default login: admin@ThreatLens.cyber / ThreatLens2026!');
 }
 
 main()
@@ -372,3 +372,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+

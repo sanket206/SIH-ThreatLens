@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -280,8 +280,8 @@ export default function LoginPage() {
     e.preventDefault();
     setErrorText('');
 
-    const targetEmail = email.trim() || 'alex.reyes@vigil.cyber';
-    const targetPassword = password || 'PhisherMan2026!';
+    const targetEmail = email.trim() || 'alex.reyes@ThreatLens.cyber';
+    const targetPassword = password || 'ThreatLens2026!';
 
     if (mode === 'signup' && password && confirm && password !== confirm) {
       setErrorText("Passphrases don't match.");
@@ -302,8 +302,8 @@ export default function LoginPage() {
         throw new Error(data.error || 'Authentication failed');
       }
 
-      localStorage.setItem('phisherman_user', JSON.stringify(data.user || { name: 'Alex Reyes', email: targetEmail, role: 'SOC Analyst' }));
-      document.cookie = 'phisherman_token=active_session; path=/; max-age=604800;';
+      localStorage.setItem('ThreatLens_user', JSON.stringify(data.user || { name: 'Alex Reyes', email: targetEmail, role: 'SOC Analyst' }));
+      document.cookie = 'ThreatLens_token=active_session; path=/; max-age=604800;';
 
       setTimeout(() => {
         window.location.href = '/dashboard';
@@ -512,7 +512,7 @@ export default function LoginPage() {
             <div className="auth-card-inner">
               <div className="brand">
                 <svg viewBox="0 0 24 24"><path className="bolt" d="M13 2 L4 14h6l-1 8 10-13h-6l0-7z" /></svg>
-                <span className="wordmark" id="wordmark"><span className="n1">PHISHERMAN</span><span className="n3">AI</span></span>
+                <span className="wordmark" id="wordmark"><span className="n1">ThreatLens</span><span className="n3">AI</span></span>
               </div>
 
               <div className="status-pill" id="statusPill"><span className="blip"></span><span id="statusText">SYS_STATUS: AUTH GATEWAY STANDBY</span></div>
@@ -529,7 +529,7 @@ export default function LoginPage() {
                   <input
                     id="email"
                     type="email"
-                    placeholder="alex.reyes@vigil.cyber"
+                    placeholder="alex.reyes@ThreatLens.cyber"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                   />
@@ -596,3 +596,4 @@ export default function LoginPage() {
     </>
   );
 }
+

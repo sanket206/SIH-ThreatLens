@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ export default function HistoryPage() {
   const [dateStr, setDateStr] = useState('---, --- --');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('phisherman_user');
+    const storedUser = localStorage.getItem('ThreatLens_user');
     if (!storedUser) {
       router.push('/login');
       return;
@@ -46,7 +46,7 @@ export default function HistoryPage() {
 
       let localScans: any[] = [];
       try {
-        localScans = JSON.parse(localStorage.getItem('phisherman_local_scans') || '[]');
+        localScans = JSON.parse(localStorage.getItem('ThreatLens_local_scans') || '[]');
       } catch {}
 
       const combinedMap = new Map();
@@ -274,3 +274,4 @@ export default function HistoryPage() {
     </>
   );
 }
+

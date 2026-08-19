@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,7 @@ export default function ScannerPage() {
   const [dateStr, setDateStr] = useState('---, --- --');
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('phisherman_user');
+    const storedUser = localStorage.getItem('ThreatLens_user');
     if (!storedUser) {
       router.push('/login');
       return;
@@ -79,9 +79,9 @@ export default function ScannerPage() {
           verdict: item.verdict || 'SAFE',
           createdAt: item.createdAt || new Date().toISOString(),
         };
-        const localItems = JSON.parse(localStorage.getItem('phisherman_local_scans') || '[]');
+        const localItems = JSON.parse(localStorage.getItem('ThreatLens_local_scans') || '[]');
         const filtered = localItems.filter((s: any) => s.url !== historyRecord.url);
-        localStorage.setItem('phisherman_local_scans', JSON.stringify([historyRecord, ...filtered]));
+        localStorage.setItem('ThreatLens_local_scans', JSON.stringify([historyRecord, ...filtered]));
 
         fetch('/api/history', {
           method: 'POST',
@@ -506,3 +506,4 @@ export default function ScannerPage() {
     </>
   );
 }
+

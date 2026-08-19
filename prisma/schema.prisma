@@ -1,4 +1,4 @@
-// PhisherMan Prisma Database Schema
+﻿// ThreatLens Prisma Database Schema
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
@@ -109,4 +109,5 @@ model PhishingDataset {
   closestBrand        String?
   createdAt           DateTime @default(now())
 }
+
 

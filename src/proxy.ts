@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function proxy(request: NextRequest) {
-  const token = request.cookies.get('phisherman_token')?.value;
+  const token = request.cookies.get('ThreatLens_token')?.value;
   const { pathname } = request.nextUrl;
 
   const protectedRoutes = ['/dashboard', '/scanner', '/history', '/threats', '/settings'];
@@ -20,3 +20,4 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: ['/dashboard/:path*', '/scanner/:path*', '/history/:path*', '/threats/:path*', '/settings/:path*'],
 };
+

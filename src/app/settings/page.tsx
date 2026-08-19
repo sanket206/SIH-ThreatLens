@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -16,7 +16,7 @@ export default function SettingsPage() {
   const [savedToast, setSavedToast] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('phisherman_user');
+    const storedUser = localStorage.getItem('ThreatLens_user');
     if (!storedUser) {
       router.push('/login');
       return;
@@ -229,3 +229,4 @@ export default function SettingsPage() {
     </>
   );
 }
+

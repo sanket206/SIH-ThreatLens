@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
     }
 
-    const cleanEmail = (email || 'admin@phisherman.cyber').toLowerCase().trim();
+    const cleanEmail = (email || 'admin@ThreatLens.cyber').toLowerCase().trim();
     let userData = {
       id: 'usr_admin_v2',
       email: cleanEmail,
@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       });
 
       if (!user) {
-        const passwordHash = await bcrypt.hash(password || 'PhisherMan2026!', 10);
+        const passwordHash = await bcrypt.hash(password || 'ThreatLens2026!', 10);
         user = await db.user.create({
           data: {
             email: cleanEmail,
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
       user: userData,
     });
 
-    response.cookies.set('phisherman_token', `active_session_${userData.id}`, {
+    response.cookies.set('ThreatLens_token', `active_session_${userData.id}`, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -74,3 +74,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message || 'Authentication error' }, { status: 500 });
   }
 }
+

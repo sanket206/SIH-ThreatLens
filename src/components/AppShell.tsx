@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -102,7 +102,7 @@ export default function AppShell({ children, breadcrumbTitle }: AppShellProps) {
             </div>
             <div className="flex-1 overflow-hidden">
               <p className="text-xs font-semibold text-white truncate">{currentUser?.name || 'Operator 01'}</p>
-              <p className="text-[10px] text-gray-400 truncate">{currentUser?.email || 'admin@phisherman.cyber'}</p>
+              <p className="text-[10px] text-gray-400 truncate">{currentUser?.email || 'admin@ThreatLens.cyber'}</p>
             </div>
           </div>
           <button
@@ -157,3 +157,4 @@ export default function AppShell({ children, breadcrumbTitle }: AppShellProps) {
     </div>
   );
 }
+

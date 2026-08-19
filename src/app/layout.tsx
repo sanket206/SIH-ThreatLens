@@ -1,8 +1,8 @@
-import './globals.css';
+﻿import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'PhisherMan | Cyber-Void Internet Immunity & Phishing Scanner',
+  title: 'ThreatLens | Cyber-Void Internet Immunity & Phishing Scanner',
   description: 'Enterprise AI Phishing Detection & Real-Time Threat Intelligence Pipeline',
 };
 
@@ -27,3 +27,4 @@ export default function RootLayout({
     </html>
   );
 }
+

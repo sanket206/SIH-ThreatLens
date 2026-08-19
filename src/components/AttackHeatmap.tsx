@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useRef } from 'react';
 
@@ -288,7 +288,7 @@ export default function AttackHeatmap() {
       <div className="map-header">
         <div className="map-title">Global Threat Map</div>
         <div style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: '11px', color: '#00F0FF' }}>
-          ● LIVE VIGIL TELEMETRY MESH
+          ● LIVE ThreatLens TELEMETRY MESH
         </div>
       </div>
 
@@ -313,3 +313,4 @@ export default function AttackHeatmap() {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import Script from 'next/script';
@@ -746,7 +746,7 @@ export default function LandingPage() {
       <div id="globe-wrap"><canvas id="globe-canvas"></canvas></div>
 
       <nav id="navbar">
-        <div className="logo"><span className="logo-mark"></span>PhisherMan</div>
+        <div className="logo"><span className="logo-mark"></span>ThreatLens</div>
         <div className="nav-links">
           <Link href="/dashboard">Dashboard</Link>
           <a href="#features">Features</a>
@@ -763,7 +763,7 @@ export default function LandingPage() {
         <div className="hero-inner">
           <div className="eyebrow"><span className="dot"></span> Zero-Trust Web Gateway</div>
           <h1>Architecting Internet Immunity</h1>
-          <p>PhisherMan inspects every request before it reaches a browser — catching phishing kits, typo-squats and zero-day lookalikes in milliseconds, not headlines.</p>
+          <p>ThreatLens inspects every request before it reaches a browser — catching phishing kits, typo-squats and zero-day lookalikes in milliseconds, not headlines.</p>
           <div className="hero-ctas">
             <a className="btn btn-solid btn-lg" id="cta-scan" href="#scan">Check a URL</a>
             <Link className="btn btn-ghost btn-lg" href="/threats">Explore Threat Intel</Link>
@@ -776,7 +776,7 @@ export default function LandingPage() {
         <div style={{ width: '100%', maxWidth: '760px' }}>
           <div className="scan-box" id="scanBox">
             <div className="scan-row">
-              <input id="scanInput" type="text" placeholder="Paste a URL to scan — try phisherMan.com or free-gift-verify.ru" />
+              <input id="scanInput" type="text" placeholder="Paste a URL to scan — try ThreatLens.com or free-gift-verify.ru" />
               <button className="btn btn-solid" id="scanBtn" type="button">Scan</button>
             </div>
             <div className="scan-progress" id="scanProgress"></div>
@@ -794,7 +794,7 @@ export default function LandingPage() {
 
       <section className="pipeline-section" id="pipeline">
         <div className="pipeline-heading">
-          <h2>How PhisherMan Works</h2>
+          <h2>How ThreatLens Works</h2>
           <p>Four checkpoints, one packet's journey — from socket to verdict.</p>
         </div>
         <div className="pipeline-track" id="pipelineTrack">
@@ -820,7 +820,7 @@ export default function LandingPage() {
           <div className="step left" id="step3">
             <div className="kicker">SIH1454 · The Detective</div>
             <h3>Phishing Detection</h3>
-            <p>Suspicious-but-unlisted domains are opened in a headless browser sandbox, where PhisherMan walks the rendered DOM tree looking for cloned login forms and brand impersonation.</p>
+            <p>Suspicious-but-unlisted domains are opened in a headless browser sandbox, where ThreatLens walks the rendered DOM tree looking for cloned login forms and brand impersonation.</p>
             <div className="step-visual"><div className="laser"></div></div>
           </div>
 
@@ -857,12 +857,13 @@ export default function LandingPage() {
       </section>
 
       <footer>
-        <div className="logo"><span className="logo-mark"></span>PhisherMan</div>
+        <div className="logo"><span className="logo-mark"></span>ThreatLens</div>
         <div className="foot-links">
           <Link href="#">Privacy</Link><Link href="#">Status</Link><Link href="#">Docs</Link><Link href="#">Contact</Link>
         </div>
-        <div className="copy">© 2026 PhisherMan. Internet immunity, architected.</div>
+        <div className="copy">© 2026 ThreatLens. Internet immunity, architected.</div>
       </footer>
     </>
   );
 }
+

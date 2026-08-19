@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
       user: userData,
     });
 
-    response.cookies.set('phisherman_token', `active_session_${userData.id}`, {
+    response.cookies.set('ThreatLens_token', `active_session_${userData.id}`, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -71,3 +71,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message || 'Registration error' }, { status: 500 });
   }
 }
+

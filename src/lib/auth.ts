@@ -1,9 +1,9 @@
-import bcrypt from 'bcryptjs';
+﻿import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { db } from './db';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'phisherman_cyber_void_secret_key_2026_super_secure';
+const JWT_SECRET = process.env.JWT_SECRET || 'ThreatLens_cyber_void_secret_key_2026_super_secure';
 
 export interface TokenPayload {
   userId: string;
@@ -45,7 +45,7 @@ export async function getAuthUser(req?: Request) {
 
     if (!token) {
       const cookieStore = await cookies();
-      token = cookieStore.get('phisherman_token')?.value;
+      token = cookieStore.get('ThreatLens_token')?.value;
     }
 
     if (!token) return null;
@@ -70,3 +70,4 @@ export async function getAuthUser(req?: Request) {
     return null;
   }
 }
+

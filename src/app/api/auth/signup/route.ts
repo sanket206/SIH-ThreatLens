@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { hashPassword, signToken } from '@/lib/auth';
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     const token = signToken({ userId: user.id, email: user.email, role: user.role });
 
     const response = NextResponse.json({ success: true, user, token }, { status: 201 });
-    response.cookies.set('phisherman_token', token, {
+    response.cookies.set('ThreatLens_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -55,3 +55,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message || 'Signup failed.' }, { status: 500 });
   }
 }
+

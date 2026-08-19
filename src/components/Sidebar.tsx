@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 
@@ -94,7 +94,7 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
         <div className="sidebar-brand">
           <div className="radar-mark"><div className="dot"></div></div>
           <div>
-            <div className="name">VIGIL</div>
+            <div className="name">ThreatLens</div>
             <div className="sub">COMMAND CENTER</div>
           </div>
         </div>
@@ -131,3 +131,4 @@ export default function Sidebar({ activeRoute }: SidebarProps) {
     </>
   );
 }
+

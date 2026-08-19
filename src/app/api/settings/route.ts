@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
 export async function GET(req: Request) {
   const defaultSettings = {
     autoQuarantine: true,
     scanTimeoutSeconds: 30,
-    alertEmail: 'admin@phisherman.cyber',
+    alertEmail: 'admin@ThreatLens.cyber',
     customRules: JSON.stringify({ blockNewlyRegistered: true, strictSslValidation: true }),
     apiKeys: JSON.stringify({ virustotal: '', abuseipdb: '', openai: '', google_safebrowsing: '' }),
   };
@@ -40,7 +40,7 @@ export async function PUT(req: Request) {
       settings: {
         autoQuarantine: body.autoQuarantine ?? true,
         scanTimeoutSeconds: body.scanTimeoutSeconds ?? 30,
-        alertEmail: body.alertEmail || 'admin@phisherman.cyber',
+        alertEmail: body.alertEmail || 'admin@ThreatLens.cyber',
         customRules: JSON.stringify(body.customRules || {}),
         apiKeys: JSON.stringify(body.apiKeys || {}),
       },
@@ -83,3 +83,4 @@ export async function PUT(req: Request) {
     return NextResponse.json({ message: 'Settings updated successfully' });
   }
 }
+
