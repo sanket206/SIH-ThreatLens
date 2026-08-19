@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
@@ -8,9 +8,6 @@ export default function ScannerPage() {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* ============================================================
-       Ambient particle background
-       ============================================================ */
     let radarRaf: number | null = null;
     let bgRaf: number | null = null;
     let glowRaf: number | null = null;
@@ -88,9 +85,6 @@ export default function ScannerPage() {
       }
     } catch (e) { console.error('glow failed', e); }
 
-    /* ============================================================
-       Shared data store for Scanner Logic
-       ============================================================ */
     function hashStr(str: string) { let h = 0; for (let i = 0; i < str.length; i++) { h = (h << 5) - h + str.charCodeAt(i); h |= 0; } return h; }
     function mulberry32(seed: number) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let x = Math.imul(seed ^ seed >>> 15, 1 | seed); x = x + Math.imul(x ^ x >>> 7, 61 | x) ^ x; return ((x ^ x >>> 14) >>> 0) / 4294967296; }; }
 
@@ -131,9 +125,6 @@ export default function ScannerPage() {
 
     function bandOf(score: number) { return score < 40 ? 'safe' : (score > 70 ? 'phishing' : 'suspicious'); }
 
-    /* ============================================================
-       Scanner engine (progress steps + risk ring + explanation)
-       ============================================================ */
     const scannerPanel = document.getElementById('scannerPanel');
     const progressPanel = document.getElementById('progressPanel');
     const resultsPanel = document.getElementById('resultsPanel');
@@ -349,7 +340,6 @@ export default function ScannerPage() {
   return (
     <>
       <style jsx global>{`
-        /* Exactly from user's provided HTML */
         .app { position: relative; min-height: 100vh; overflow: hidden; }
         canvas#bg { position: absolute; inset: -4%; width: 108%; height: 108%; display: block; }
         .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 1;
@@ -361,7 +351,6 @@ export default function ScannerPage() {
 
         .shell { position: relative; z-index: 2; display: flex; min-height: 100vh; }
         
-        /* content-col and topbar layout to replace the app-shell layout from dashboard */
         .content-col { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; }
         
         .topbar {
@@ -494,7 +483,7 @@ export default function ScannerPage() {
         .tech-desc { font-family: var(--font-body); font-size: 12px; line-height: 1.6; color: var(--text-muted); }
         
         .landscape-footer { margin-top: 50px; padding-top: 24px; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); line-height: 1.6; }
-      `}
+        
         @media (max-width: 820px) {
           .results-grid { grid-template-columns: 1fr; }
           .verdict-col { border-right: none; border-bottom: 1px solid var(--line); }
@@ -517,7 +506,7 @@ export default function ScannerPage() {
           .ring-fg { transition: none; }
           .verdict-col.shake { animation: none; }
         }
-      }</style>
+      `}</style>
 
       <div className="app">
         <canvas id="bg"></canvas>
@@ -694,4 +683,3 @@ export default function ScannerPage() {
     </>
   );
 }
-
