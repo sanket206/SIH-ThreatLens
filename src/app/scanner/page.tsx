@@ -262,6 +262,29 @@ export default function ScannerPage() {
     function showResults(data: any) {
       if (radarRaf) cancelAnimationFrame(radarRaf);
       if(!progressPanel || !resultsPanel || !stamp || !verdictCol || !verdictUrl || !verdictLabel || !ringFg || !ringScore || !explainTerminal || !signalRows) return;
+
+      const band = bandOf(data.score);
+      
+      try {
+        const localHist = JSON.parse(localStorage.getItem('ThreatLens_local_scans') || '[]');
+        const newScan = {
+          id: `scan_${Date.now()}`,
+          url: data.url,
+          domain: data.host,
+          ipAddress: '194.26.29.110',
+          overallScore: data.score,
+          verdict: band === 'phishing' ? 'QUARANTINED' : (band === 'safe' ? 'SAFE' : 'SUSPICIOUS'),
+          createdAt: new Date().toISOString()
+        };
+        localHist.unshift(newScan);
+        localStorage.setItem('ThreatLens_local_scans', JSON.stringify(localHist.slice(0, 50)));
+
+        fetch('/api/history', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newScan)
+        }).catch(() => {});
+      } catch (e) {}
       
       progressPanel.classList.add('hidden');
       resultsPanel.classList.remove('hidden');
@@ -269,7 +292,6 @@ export default function ScannerPage() {
       verdictCol.classList.remove('shake');
       verdictUrl.textContent = data.host;
 
-      const band = bandOf(data.score);
       let color;
       if (band === 'safe') { color = '#00F0FF'; verdictLabel.textContent = 'Verified Safe'; }
       else if (band === 'phishing') { color = '#FF0055'; verdictLabel.textContent = 'Phishing Detected'; }
