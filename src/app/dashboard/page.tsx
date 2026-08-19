@@ -380,7 +380,9 @@ export default function DashboardPage() {
       `}</style>
 
       {/* Verbatim Dashboard Structure */}
-      <div className="vignette" id="vignette" style={{ opacity: vignetteOpacity }}></div>`n`n      <div className="app-shell">
+      <div className="vignette" id="vignette" style={{ opacity: vignetteOpacity }}></div>
+
+      <div className="app-shell">
         <Sidebar activeRoute="dashboard" />
 
         <div className="shell-main">
@@ -706,6 +708,8 @@ export default function DashboardPage() {
     </>
   );
 }
+
+
 
 
 
