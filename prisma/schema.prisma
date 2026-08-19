@@ -1,4 +1,4 @@
-﻿// ThreatLens Prisma Database Schema
+// ThreatLens Prisma Database Schema
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
