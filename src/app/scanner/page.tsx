@@ -23,8 +23,8 @@ export default function ScannerPage() {
         
         const resize = () => {
           const DPR = Math.min(window.devicePixelRatio || 1, 2);
-          W = canvas.clientWidth = canvas.offsetWidth;
-          H = canvas.clientHeight = canvas.offsetHeight;
+          W = canvas.offsetWidth;
+          H = canvas.offsetHeight;
           canvas.width = W * DPR; canvas.height = H * DPR;
           ctx?.setTransform(DPR, 0, 0, DPR, 0, 0);
           particles = [];
@@ -648,5 +648,6 @@ export default function ScannerPage() {
     </>
   );
 }
+
 
 
