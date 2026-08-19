@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useEffect } from 'react';
 import Script from 'next/script';
@@ -838,12 +838,42 @@ export default function LandingPage() {
           <h2>Everything the gateway checks, before you ever click.</h2>
         </div>
         <div className="features-grid" id="featuresGrid">
-          <div className="feature-card"><div className="feature-icon">â—ˆ</div><h3>DNS Filtering</h3><p>Blocks known-malicious domains at the socket layer, before a single byte is exchanged.</p></div>
-          <div className="feature-card"><div className="feature-icon">âœ¦</div><h3>Typo-squat Detection</h3><p>Flags lookalike domains that swap characters to impersonate trusted brands.</p></div>
-          <div className="feature-card"><div className="feature-icon">â—Ž</div><h3>Visual AI</h3><p>Compares rendered pages against protected brand assets to catch pixel-level clones.</p></div>
-          <div className="feature-card"><div className="feature-icon">â—</div><h3>Zero-Day Blocking</h3><p>Heuristic scoring catches infrastructure with no reputation history yet.</p></div>
-          <div className="feature-card"><div className="feature-icon">â—†</div><h3>Live Telemetry</h3><p>Every block and allow decision streams to a real-time dashboard.</p></div>
-          <div className="feature-card"><div className="feature-icon">â—ˆ</div><h3>Encrypted Tunnel</h3><p>TLS-inspected traffic stays encrypted end-to-end through the gateway.</p></div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3>DNS Filtering</h3><p>Blocks known-malicious domains at the socket layer, before a single byte is exchanged.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            </div>
+            <h3>Typo-squat Detection</h3><p>Flags lookalike domains that swap characters to impersonate trusted brands.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <h3>Visual AI</h3><p>Compares rendered pages against protected brand assets to catch pixel-level clones.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Zero-Day Blocking</h3><p>Heuristic scoring catches infrastructure with no reputation history yet.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <h3>Live Telemetry</h3><p>Every block and allow decision streams to a real-time dashboard.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3>Encrypted Tunnel</h3><p>TLS-inspected traffic stays encrypted end-to-end through the gateway.</p>
+          </div>
         </div>
       </section>
 
