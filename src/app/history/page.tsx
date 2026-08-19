@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import TopbarRight from '@/components/TopbarRight';
 
@@ -241,6 +240,7 @@ export default function HistoryPage() {
     </>
   );
 }
+
 
 
 

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import Sidebar from '@/components/Sidebar';
@@ -559,7 +559,7 @@ export default function ScannerPage() {
                   <div className="left">
                     <span className="dot"></span>GLOBAL PHISHING LANDSCAPE
                   </div>
-                  <div>APWG Q1 2026 & Check Point Research Q2 2026</div>
+                  <div>APWG Q1 2026 &amp; Check Point Research Q2 2026</div>
                 </div>
 
                 <div className="stats-row">
@@ -619,15 +619,15 @@ export default function ScannerPage() {
                     <div className="tech-list">
                       <div className="tech-item">
                         <div className="tech-title">Typosquatting</div>
-                        <div className="tech-desc">Registering misspelled or hyphenated variants of a brand's domain (e.g. amaz0n-billing.com) to catch mistyped or hurried clicks.</div>
+                        <div className="tech-desc">Registering misspelled or hyphenated variants of a brand&apos;s domain (e.g. amaz0n-billing.com) to catch mistyped or hurried clicks.</div>
                       </div>
                       <div className="tech-item">
                         <div className="tech-title">Homograph / punycode spoofing</div>
                         <div className="tech-desc">Using look-alike Unicode characters so a domain renders almost identically to the real one.</div>
                       </div>
                       <div className="tech-item">
-                        <div className="tech-title">Unauthorized logo & brand use</div>
-                        <div className="tech-desc">Copying a brand's logo, colors and layout onto a fake login or payment page to build false trust.</div>
+                        <div className="tech-title">Unauthorized logo &amp; brand use</div>
+                        <div className="tech-desc">Copying a brand&apos;s logo, colors and layout onto a fake login or payment page to build false trust.</div>
                       </div>
                       <div className="tech-item">
                         <div className="tech-title">Disposable free-TLD hosting</div>
@@ -638,7 +638,7 @@ export default function ScannerPage() {
                 </div>
 
                 <div className="landscape-footer">
-                  Figures reflect published third-party industry research (APWG Phishing Activity Trends Report, Q1 2026; Check Point Research Brand Phishing Report, Q2 2026) and are not a live feed of this workspace's own traffic.
+                  Figures reflect published third-party industry research (APWG Phishing Activity Trends Report, Q1 2026; Check Point Research Brand Phishing Report, Q2 2026) and are not a live feed of this workspace&apos;s own traffic.
                 </div>
               </section>
             </section>
@@ -648,3 +648,5 @@ export default function ScannerPage() {
     </>
   );
 }
+
+
