@@ -1,9 +1,10 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
+import TopbarRight from '@/components/TopbarRight';
 
 export default function ScannerPage() {
   const router = useRouter();
@@ -257,9 +258,7 @@ export default function ScannerPage() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <span style={{ color: 'var(--text-faint)' }}>Workspace</span> / <span style={{ color: 'var(--text)' }}>Scanner</span>
               </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '13px' }}>
-                {timeStr} | {dateStr}
-              </div>
+              <TopbarRight />
             </header>
 
             <main className="main">
@@ -474,5 +473,6 @@ export default function ScannerPage() {
     </>
   );
 }
+
 
 

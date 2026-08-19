@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
+import TopbarRight from '@/components/TopbarRight';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -17,9 +18,6 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [recentScans, setRecentScans] = useState<any[]>([]);
 
-  const [timeStr, setTimeStr] = useState('20:30:00');
-  const [dateStr, setDateStr] = useState('TUE, AUG 18');
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   const [vignetteOpacity, setVignetteOpacity] = useState(0);
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -35,19 +33,6 @@ export default function DashboardPage() {
       return;
     }
     // Clock
-    const updateClock = () => {
-      const now = new Date();
-      const hrs = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
-      setTimeStr(`${hrs}:${mins}:${secs}`);
-
-      const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-      const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-      setDateStr(`${days[now.getDay()]}, ${months[now.getMonth()]} ${now.getDate()}`);
-    };
-    updateClock();
-    const clockInterval = setInterval(updateClock, 1000);
 
     // Live statistics update simulation & API fetch
     const loadStats = async () => {
@@ -91,8 +76,7 @@ export default function DashboardPage() {
     }, 3200);
 
     return () => {
-      clearInterval(clockInterval);
-      clearInterval(ticker);
+            clearInterval(ticker);
     };
   }, []);
 
@@ -393,42 +377,8 @@ export default function DashboardPage() {
               <span className="crumb current">Dashboard</span>
             </div>
 
-            <div className="topbar-right">
-              <div className="clock">
-                <span className="time">{timeStr}</span>
-                <span className="date">{dateStr}</span>
-              </div>
-
-              <button className="icon-btn" aria-label="Notifications">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
-                <span className="badge">3</span>
-              </button>
-
-              <div className="user-chip" onClick={() => setUserMenuOpen(!userMenuOpen)}>
-                <div className="avatar">AR</div>
-                <div className="who">
-                  <span className="n">Alex Reyes</span>
-                  <span className="r">SOC Analyst</span>
-                </div>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6" /></svg>
-                {userMenuOpen && (
-                  <div className="user-menu">
-                    <button><Link href="/settings">Settings</Link></button>
-                    <button
-                      onClick={async (e) => {
-                        e.stopPropagation();
-                        localStorage.removeItem('ThreatLens_user');
-                        await fetch('/api/auth/logout', { method: 'POST' });
-                        router.push('/login');
-                      }}
-                    >
-                      Log out
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </header>
+            <TopbarRight />
+            </header>
 
           <main>
             <div className="page-head">
@@ -708,6 +658,8 @@ export default function DashboardPage() {
     </>
   );
 }
+
+
 
 
 

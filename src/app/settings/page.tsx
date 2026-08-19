@@ -1,9 +1,10 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
+import TopbarRight from '@/components/TopbarRight';
 
 export default function SettingsPage() {
   const router = useRouter();
@@ -21,6 +22,11 @@ export default function SettingsPage() {
       router.push('/login');
       return;
     }
+    const storedName = localStorage.getItem('ThreatLens_userName');
+    if (storedName) {
+      setFullName(storedName);
+    }
+
     const loadSettings = async () => {
       try {
         const res = await fetch('/api/settings');
@@ -37,16 +43,20 @@ export default function SettingsPage() {
   }, []);
 
   const handleSave = async () => {
-    try {
-      await fetch('/api/settings', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          autoQuarantine,
-          alertEmail: workEmail,
-        }),
-      });
-      setSavedToast(true);
+      try {
+        await fetch('/api/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            autoQuarantine,
+            alertEmail: workEmail,
+          }),
+        });
+        
+        localStorage.setItem('ThreatLens_userName', fullName);
+        window.dispatchEvent(new Event('profileUpdated'));
+        
+        setSavedToast(true);
       setTimeout(() => setSavedToast(false), 2000);
     } catch (err) {
       console.error('Failed to save settings:', err);
@@ -119,6 +129,7 @@ export default function SettingsPage() {
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
                 <span style={{ color: 'var(--text-faint)' }}>Workspace</span> / <span style={{ color: 'var(--text)' }}>Settings</span>
               </div>
+              <TopbarRight />
             </header>
 
             <main className="main">
@@ -197,5 +208,10 @@ export default function SettingsPage() {
     </>
   );
 }
+
+
+
+
+
 
 
