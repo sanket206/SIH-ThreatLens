@@ -348,8 +348,16 @@ export default function ScannerPage() {
   return (
     <>
       <style jsx>{`
-        canvas#bg { position: absolute; inset: -4%; width: 108%; height: 108%; display: block; }
-        .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 1;
+                .app-shell { display: flex; min-height: 100vh; position: relative; z-index: 1; }
+        .shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        header.topbar {
+          position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
+          gap: 16px; height: 60px; padding: 0 32px; border-bottom: 1px solid rgba(255,255,255,0.1);
+          background: rgba(5, 2, 9, 0.6); backdrop-filter: blur(20px);
+        }
+        main { padding: 36px 40px 60px; }
+        canvas#bg { position: fixed; inset: -4%; width: 108%; height: 108%; display: block; z-index: -1; pointer-events: none; }
+        .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 1;
           background: radial-gradient(ellipse at 24% 20%, transparent 0%, transparent 20%, rgba(5,2,9,0.55) 68%, var(--bg) 100%); }
         .cursor-glow { position: fixed; top: 0; left: 0; width: 480px; height: 480px; z-index: 5; pointer-events: none;
           background: radial-gradient(circle, rgba(0,240,255,0.12) 0%, rgba(255,0,85,0.06) 42%, transparent 68%);
@@ -648,6 +656,8 @@ export default function ScannerPage() {
     </>
   );
 }
+
+
 
 
 
