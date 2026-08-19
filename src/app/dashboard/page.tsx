@@ -218,62 +218,6 @@ export default function DashboardPage() {
         .app-shell { display: flex; min-height: 100vh; position: relative; z-index: 1; }
 
         /* ---------- Sidebar ---------- */
-        .sidebar {
-          width: var(--sidebar-w); flex-shrink: 0; position: sticky; top: 0; height: 100vh;
-          display: flex; flex-direction: column; background: rgba(8, 4, 14, 0.6);
-          backdrop-filter: blur(20px) saturate(140%); border-right: 1px solid var(--glass-border); z-index: 30;
-        }
-
-        .sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 22px 18px 18px; border-bottom: 1px solid var(--glass-border); margin-bottom: 14px; }
-        
-        .radar-mark {
-          position: relative; width: 34px; height: 34px; border-radius: 50%;
-          border: 1px solid rgba(var(--cyan-rgb), 0.4);
-          display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-          box-shadow: 0 0 16px rgba(var(--cyan-rgb), 0.15);
-        }
-        .radar-mark::before {
-          content: ""; position: absolute; inset: 0; border-radius: 50%;
-          background: conic-gradient(from 0deg, rgba(var(--cyan-rgb), 0.65), transparent 28%, transparent 100%);
-          animation: sweep 3.2s linear infinite;
-          -webkit-mask: radial-gradient(circle, transparent 55%, black 56%);
-                  mask: radial-gradient(circle, transparent 55%, black 56%);
-        }
-        .radar-mark .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px 2px rgba(var(--cyan-rgb), 0.8); z-index: 1; }
-        @keyframes sweep { to { transform: rotate(360deg); } }
-
-        .sidebar-brand .name {
-          font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: 0.06em; line-height: 1;
-          background: linear-gradient(90deg, var(--text), var(--cyan-soft));
-          -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .sidebar-brand .sub { font-size: 9.5px; color: var(--text-faint); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 3px; }
-
-        nav.nav-list { padding: 0 12px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
-
-        .nav-item {
-          position: relative; display: flex; align-items: center; gap: 12px;
-          padding: 10px 14px 10px 17px; border-radius: 9px; color: var(--text-dim);
-          font-size: 13px; font-weight: 500; text-decoration: none; transition: all .2s ease;
-        }
-        .nav-item::before {
-          content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 0; background: var(--cyan);
-          border-radius: 0 4px 4px 0; box-shadow: 0 0 12px rgba(var(--cyan-rgb), 0.85); transform: translateY(-50%);
-          transition: height .3s cubic-bezier(.3, .8, .3, 1);
-        }
-        .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-        .nav-item .label { flex: 1; }
-        .nav-item .nav-badge { width: 6px; height: 6px; border-radius: 50%; background: var(--magenta); box-shadow: 0 0 8px rgba(var(--magenta-rgb), 0.8); flex-shrink: 0; }
-
-        .nav-item:hover { background: rgba(var(--cyan-rgb), 0.09); color: var(--cyan); box-shadow: inset 0 0 0 1px rgba(var(--cyan-rgb), 0.16); transform: translateX(2px); }
-        .nav-item:hover::before { height: 38%; }
-        .nav-item.active { color: var(--text); background: rgba(var(--cyan-rgb), 0.09); }
-        .nav-item.active svg { color: var(--cyan); filter: drop-shadow(0 0 4px rgba(var(--cyan-rgb), 0.6)); }
-        .nav-item.active::before { height: 58%; }
-
-        .sidebar-footer { padding: 14px 18px 20px; margin-top: auto; border-top: 1px solid var(--glass-border); display: flex; align-items: center; gap: 9px; }
-        .sidebar-footer .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
-        .sidebar-footer .stext { font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); }
 
         /* ---------- Shell main ---------- */
         .shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
@@ -425,12 +369,6 @@ export default function DashboardPage() {
               <span className="crumb">Workspace</span>
               <span style={{ color: 'var(--text-faint)' }}>/</span>
               <span className="crumb current">Dashboard</span>
-            </div>
-
-            <div className="topbar-search">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
-              <input type="text" placeholder="Search threats, IPs, reports…" />
-              <span className="kbd">/</span>
             </div>
 
             <div className="topbar-right">
@@ -748,4 +686,5 @@ export default function DashboardPage() {
     </>
   );
 }
+
 

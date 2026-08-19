@@ -176,38 +176,6 @@ export default function ScannerPage() {
         .app { position: relative; min-height: 100vh; }
         .shell { position: relative; z-index: 2; display: flex; min-height: 100vh; }
 
-        .sidebar {
-          width: var(--sidebar-w); flex-shrink: 0; display: flex; flex-direction: column;
-          border-right: 1px solid var(--line); background: rgba(255,255,255,0.025); backdrop-filter: blur(18px);
-          padding: 24px 16px;
-        }
-
-        .brand { display: flex; align-items: center; gap: 12px; padding: 8px 6px 32px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
-        .radar-mark {
-          position: relative; width: 34px; height: 34px; border-radius: 50%;
-          border: 1px solid rgba(0,240,255, 0.4); display: flex; align-items: center; justify-content: center;
-          box-shadow: 0 0 16px rgba(0,240,255,0.15);
-        }
-        .radar-mark::before {
-          content: ""; position: absolute; inset: 0; border-radius: 50%;
-          background: conic-gradient(from 0deg, rgba(0,240,255,0.65), transparent 28%, transparent 100%);
-          animation: sweep 3.2s linear infinite;
-          -webkit-mask: radial-gradient(circle, transparent 55%, black 56%);
-                  mask: radial-gradient(circle, transparent 55%, black 56%);
-        }
-        .radar-mark .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 10px 2px rgba(0,240,255,0.8); z-index: 1; }
-        @keyframes sweep { to { transform: rotate(360deg); } }
-
-        .wordmark .n1 { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: 0.05em; color: var(--text); }
-        .wordmark .n3 { font-family: var(--font-body); font-weight: 500; font-size: 10px; color: var(--text-faint); text-transform: uppercase; }
-
-        .nav { display: flex; flex-direction: column; gap: 6px; }
-        .nav-item {
-          display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 9px;
-          color: var(--text-muted); font-size: 14px; font-weight: 600; text-decoration: none;
-        }
-        .nav-item.active, .nav-item:hover { color: var(--text); background: rgba(0,240,255,0.06); }
-
         .content-col { flex: 1; min-width: 0; display: flex; flex-direction: column; }
         .topbar {
           display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 72px;
@@ -506,4 +474,5 @@ export default function ScannerPage() {
     </>
   );
 }
+
 
