@@ -117,6 +117,8 @@ export default function SettingsPage() {
 
         .btn-primary { border: none; border-radius: 8px; padding: 10px 20px; background: linear-gradient(90deg, var(--cyan), #4dd8ff); color: #031319; font-family: var(--font-mono); font-weight: 600; font-size: 11px; text-transform: uppercase; cursor: pointer; }
         .btn-secondary { border: 1px solid var(--line); background: rgba(255,255,255,0.03); color: var(--text); font-family: var(--font-mono); font-size: 10.5px; padding: 9px 16px; border-radius: 8px; cursor: pointer; }
+        .btn-danger { border: 1px solid rgba(var(--magenta-rgb), 0.4); background: rgba(var(--magenta-rgb), 0.1); color: var(--magenta); font-family: var(--font-mono); font-size: 10.5px; padding: 9px 16px; border-radius: 8px; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; font-weight: 600; }
+        .btn-danger:hover { background: rgba(var(--magenta-rgb), 0.2); }
       `}</style>
 
       {/* HTML Markup centered matching settings.html */}
@@ -198,6 +200,13 @@ export default function SettingsPage() {
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '12px' }}>
                   {savedToast && <span style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--cyan)' }}>Saved!</span>}
+                    <button className="btn-danger" onClick={async () => {
+                      localStorage.removeItem('ThreatLens_user');
+                      await fetch('/api/auth/logout', { method: 'POST' });
+                      router.push('/login');
+                    }}>
+                      Log Out
+                    </button>
                   <button className="btn-primary" onClick={handleSave}>Save Changes</button>
                 </div>
               </div>
@@ -208,6 +217,7 @@ export default function SettingsPage() {
     </>
   );
 }
+
 
 
 
