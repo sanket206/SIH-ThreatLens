@@ -16,7 +16,7 @@ export default function ScannerPage() {
     let glowRaf: number | null = null;
 
     try {
-      const canvas = document.getElementById('bg') as HTMLCanvasElement;
+      const canvas = document.getElementById('bg') as HTMLCanvasElement | null;
       if (canvas) {
         const ctx = canvas.getContext('2d');
         let W = 0, H = 0, particles: any[] = [];
@@ -138,7 +138,7 @@ export default function ScannerPage() {
     const progressPanel = document.getElementById('progressPanel');
     const resultsPanel = document.getElementById('resultsPanel');
     const scanForm = document.getElementById('scanForm');
-    const urlInput = document.getElementById('urlInput') as HTMLInputElement;
+    const urlInput = document.getElementById('urlInput') as HTMLInputElement | null;
     const formError = document.getElementById('formError');
     const scanTargetUrl = document.getElementById('scanTargetUrl');
     const stepsList = document.getElementById('stepsList');
@@ -199,7 +199,6 @@ export default function ScannerPage() {
       buildSteps();
       startRadar();
 
-      // OPTIONAL: Still dispatch to the real backend in the background so history works
       fetch('/api/scan', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -211,7 +210,7 @@ export default function ScannerPage() {
       function runStep() {
         if (myToken !== runToken) return;
         if (i >= items.length) { setTimeout(() => { if (myToken === runToken) showResults(data); }, 300); return; }
-        const li = items[i]; const statusEl = li.querySelector('.step-status');
+        const li = items[i] as HTMLElement; const statusEl = li.querySelector('.step-status');
         if(!statusEl) return;
         li.classList.add('active');
         typeInto(statusEl, STEP_DEFS[i].msg, 15, () => {
@@ -230,13 +229,14 @@ export default function ScannerPage() {
     }
 
     function startRadar() {
-      const rc = document.getElementById('radar') as HTMLCanvasElement; if (!rc) return;
+      const rc = document.getElementById('radar') as HTMLCanvasElement | null; if (!rc) return;
       const rctx = rc.getContext('2d'); if(!rctx) return;
       let rW: number, rH: number, angle = 0;
       function rresize() {
+        if(!rc || !rctx) return;
         rW = rc.clientWidth; rH = rc.clientHeight;
         const DPR = Math.min(devicePixelRatio || 1, 2);
-        rc.width = rW * DPR; rc.height = rH * DPR; rctx?.setTransform(DPR, 0, 0, DPR, 0, 0);
+        rc.width = rW * DPR; rc.height = rH * DPR; rctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       }
       rresize();
       function rdraw() {
@@ -256,7 +256,7 @@ export default function ScannerPage() {
       if (!reduceMotion) radarRaf = requestAnimationFrame(rdraw);
     }
 
-    const ringFg = document.getElementById('ringFg');
+    const ringFg = document.getElementById('ringFg') as HTMLElement | null;
     const ringScore = document.getElementById('ringScore');
     const verdictLabel = document.getElementById('verdictLabel');
     const verdictUrl = document.getElementById('verdictUrl');
@@ -319,18 +319,19 @@ export default function ScannerPage() {
       signalRows.innerHTML = rows.map(r => `<div class="signal-row"><span class="k">${r.k}</span><span class="v">${sw(r.level)}${r.v}</span></div>`).join('');
     }
 
-    const onFormSubmit = (e: Event) => { e.preventDefault(); startScan(urlInput.value); };
+    const onFormSubmit = (e: Event) => { e.preventDefault(); if(urlInput) startScan(urlInput.value); };
     scanForm.addEventListener('submit', onFormSubmit);
 
     const onChipClick = (e: Event) => {
       const chip = e.currentTarget as HTMLElement;
-      urlInput.value = chip.dataset.url || ''; startScan(urlInput.value);
+      if(urlInput) urlInput.value = chip.dataset.url || ''; 
+      if(urlInput) startScan(urlInput.value);
     };
     const chips = document.querySelectorAll('.chip');
     chips.forEach(chip => chip.addEventListener('click', onChipClick));
 
     const onRescanClick = () => {
-      runToken++; urlInput.value = ''; if(formError) formError.textContent = '';
+      runToken++; if(urlInput) urlInput.value = ''; if(formError) formError.textContent = '';
       resultsPanel?.classList.add('hidden'); scannerPanel?.classList.remove('hidden');
     };
     rescanBtn.addEventListener('click', onRescanClick);
@@ -347,24 +348,36 @@ export default function ScannerPage() {
 
   return (
     <>
-      <style jsx>{`
-                .app-shell { display: flex; min-height: 100vh; position: relative; z-index: 1; }
-        .shell-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-        header.topbar {
-          position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between;
-          gap: 16px; height: 60px; padding: 0 32px; border-bottom: 1px solid rgba(255,255,255,0.1);
-          background: rgba(5, 2, 9, 0.6); backdrop-filter: blur(20px);
-        }
-        main { padding: 36px 40px 60px; }
-        canvas#bg { position: fixed; inset: -4%; width: 108%; height: 108%; display: block; z-index: -1; pointer-events: none; }
-        .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      <style jsx global>{`
+        /* Exactly from user's provided HTML */
+        .app { position: relative; min-height: 100vh; overflow: hidden; }
+        canvas#bg { position: absolute; inset: -4%; width: 108%; height: 108%; display: block; }
+        .vignette { position: absolute; inset: 0; pointer-events: none; z-index: 1;
           background: radial-gradient(ellipse at 24% 20%, transparent 0%, transparent 20%, rgba(5,2,9,0.55) 68%, var(--bg) 100%); }
         .cursor-glow { position: fixed; top: 0; left: 0; width: 480px; height: 480px; z-index: 5; pointer-events: none;
           background: radial-gradient(circle, rgba(0,240,255,0.12) 0%, rgba(255,0,85,0.06) 42%, transparent 68%);
           transform: translate3d(-1000px,-1000px,0) translate(-50%,-50%); mix-blend-mode: screen; opacity: 0; transition: opacity 0.4s ease; }
         .cursor-glow.active { opacity: 1; }
 
-        .view { display: block; animation: fade-in 0.45s cubic-bezier(.2,.8,.2,1) both; position: relative; z-index: 3; }
+        .shell { position: relative; z-index: 2; display: flex; min-height: 100vh; }
+        
+        /* content-col and topbar layout to replace the app-shell layout from dashboard */
+        .content-col { flex: 1; min-width: 0; display: flex; flex-direction: column; height: 100vh; }
+        
+        .topbar {
+          flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 20px;
+          padding: 0 32px; height: 72px; border-bottom: 1px solid var(--line);
+          background: rgba(5,2,9,0.4); backdrop-filter: blur(18px); position: relative; z-index: 3;
+        }
+        
+        .breadcrumbs { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.02em; white-space: nowrap; }
+        .breadcrumbs .crumb-root { color: var(--text-faint); }
+        .breadcrumbs .crumb-sep { color: var(--text-faint); opacity: 0.5; }
+        .breadcrumbs .crumb-current { color: var(--text); position: relative; padding-bottom: 2px; }
+        .breadcrumbs .crumb-current::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); }
+
+        .main { flex: 1; min-width: 0; padding: 28px 36px 60px; overflow-y: auto; }
+        .view { display: block; animation: fade-in 0.45s cubic-bezier(.2,.8,.2,1) both; }
         @keyframes fade-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
         .page-head { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: 960px; margin: 0 auto 24px auto; }
@@ -441,8 +454,18 @@ export default function ScannerPage() {
         .explain-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 11px; display: flex; align-items: center; gap: 8px; }
         .explain-header .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px var(--cyan); animation: blip 1.6s ease-in-out infinite; }
         .terminal { font-family: var(--font-mono); font-size: 13px; line-height: 1.75; color: var(--text); background: rgba(0,0,0,0.28); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-height: 110px; }
-        
-        .landscape-section { max-width: 960px; margin: 60px auto 0; padding: 0; position: relative; z-index: 3; }
+        .terminal .caret { display: inline-block; width: 7px; height: 14px; background: var(--cyan); vertical-align: middle; margin-left: 2px; animation: caret-block .8s steps(1) infinite; }
+        @keyframes caret-block { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+        .signal-rows { margin-top: 20px; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+        .signal-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 2px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; }
+        .signal-row .k { color: var(--text-muted); }
+        .signal-row .v { color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 7px; }
+        .sw { width: 7px; height: 7px; border-radius: 50%; }
+        .sw.ok { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
+        .sw.warn { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+        .sw.bad { background: var(--magenta); box-shadow: 0 0 6px var(--magenta); }
+
+        .landscape-section { max-width: 960px; margin: 60px auto 0; padding: 0; }
         .landscape-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-faint); }
         .landscape-header .left { display: flex; align-items: center; gap: 10px; color: var(--text-muted); }
         .landscape-header .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px rgba(0,240,255,0.5); }
@@ -471,193 +494,204 @@ export default function ScannerPage() {
         .tech-desc { font-family: var(--font-body); font-size: 12px; line-height: 1.6; color: var(--text-muted); }
         
         .landscape-footer { margin-top: 50px; padding-top: 24px; border-top: 1px solid var(--line); font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); line-height: 1.6; }
-      `}</style>
-      
-      <style jsx global>{`
-        .terminal .caret { display: inline-block; width: 7px; height: 14px; background: var(--cyan); vertical-align: middle; margin-left: 2px; animation: caret-block .8s steps(1) infinite; }
-        @keyframes caret-block { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
-        .signal-rows { margin-top: 20px; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
-        .signal-row { display: flex; align-items: center; justify-content: space-between; padding: 11px 2px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); font-size: 11.5px; }
-        .signal-row .k { color: var(--text-muted); }
-        .signal-row .v { color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 7px; }
-        .sw { width: 7px; height: 7px; border-radius: 50%; }
-        .sw.ok { background: var(--cyan); box-shadow: 0 0 6px var(--cyan); }
-        .sw.warn { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
-        .sw.bad { background: var(--magenta); box-shadow: 0 0 6px var(--magenta); }
-      `}</style>
+      `}
+        @media (max-width: 820px) {
+          .results-grid { grid-template-columns: 1fr; }
+          .verdict-col { border-right: none; border-bottom: 1px solid var(--line); }
+          .nav-clock { display: none; }
+          .stats-row { grid-template-columns: 1fr; }
+          .landscape-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 760px) {
+          .sidebar { width: 72px; padding: 18px 10px; }
+          .wordmark, .nav-item span.label, .status-pill span:last-child { display: none; }
+          .brand { justify-content: center; }
+          .nav-item { justify-content: center; }
+          .main { padding: 24px 18px 50px; }
+          .topbar { padding: 0 16px; gap: 10px; }
+          .profile-meta, .profile-chevron { display: none; }
+          .profile-pill { padding: 4px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .status-pill .blip, .panel-title .dot, .step-icon::after, .stamp, .terminal .caret, .step-status::after { animation: none !important; }
+          .ring-fg { transition: none; }
+          .verdict-col.shake { animation: none; }
+        }
+      }</style>
 
-      <canvas id="bg"></canvas>
-      <div className="vignette"></div>
-      <div className="cursor-glow" id="cursorGlow"></div>
+      <div className="app">
+        <canvas id="bg"></canvas>
+        <div className="vignette"></div>
+        <div className="cursor-glow" id="cursorGlow"></div>
 
-      <div className="app-shell">
-        <Sidebar activeRoute="scanner" />
+        <div className="shell">
+          <Sidebar activeRoute="scanner" />
 
-        <div className="shell-main">
-          <header className="topbar">
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px' }}>
-              <span style={{ color: 'var(--text-faint)' }}>Workspace</span> / <span style={{ color: 'var(--text)' }}>Scanner</span>
-            </div>
-            <TopbarRight />
-          </header>
-
-          <main className="main" style={{ position: 'relative' }}>
-            <section className="view" id="view-scanner">
-              <div className="page-head">
-                <div>
-                  <div className="page-eyebrow">URL Threat Scanner</div>
-                  <h1 className="page-title">Is this link safe to open?</h1>
-                  <p className="page-sub" style={{ marginTop: '6px' }}>Runs DNS, WHOIS, SSL, DOM and visual-similarity checks before rendering a verdict.</p>
-                </div>
+          <div className="content-col">
+            <header className="topbar">
+              <div className="breadcrumbs">
+                <span className="crumb-root">Workspace</span>
+                <span className="crumb-sep">/</span>
+                <span className="crumb-current">Scanner</span>
               </div>
+              
+              <TopbarRight />
+            </header>
 
-              <section className="panel scanner-panel" id="scannerPanel">
-                <form className="scan-form" id="scanForm" noValidate>
-                  <input type="text" id="urlInput" placeholder="https://example.com" autoComplete="off" />
-                  <button type="submit" className="scan-btn" id="scanBtn">Scan</button>
-                </form>
-                <p className="form-error" id="formError"></p>
-                <div className="chips-label">Try a sample</div>
-                <div className="chips">
-                  <button className="chip" type="button" data-url="https://github.com">github.com</button>
-                  <button className="chip" type="button" data-url="https://paypal-secure-verify-account.tk">paypal-secure-verify-account.tk</button>
-                  <button className="chip" type="button" data-url="https://accounts-google-support.cf/login">accounts-google-support.cf</button>
-                  <button className="chip" type="button" data-url="https://mybank-online-update.xyz">mybank-online-update.xyz</button>
+            <main className="main">
+              <section className="view" id="view-scanner">
+                <div className="page-head">
+                  <div>
+                    <div className="page-eyebrow">URL Threat Scanner</div>
+                    <h1 className="page-title">Is this link safe to open?</h1>
+                    <p className="page-sub" style={{ marginTop: '6px' }}>Runs DNS, WHOIS, SSL, DOM and visual-similarity checks before rendering a verdict.</p>
+                  </div>
                 </div>
-              </section>
 
-              <section className="panel progress-panel hidden" id="progressPanel">
-                <canvas id="radar"></canvas>
-                <div className="scan-target-row">
-                  <span className="scan-target-label">Scanning:</span>
-                  <span className="scan-target-url" id="scanTargetUrl"></span>
-                </div>
-                <ul className="steps" id="stepsList"></ul>
-              </section>
+                <section className="panel scanner-panel" id="scannerPanel">
+                  <form className="scan-form" id="scanForm" noValidate>
+                    <input type="text" id="urlInput" placeholder="https://example.com" autoComplete="off" />
+                    <button type="submit" className="scan-btn" id="scanBtn">Scan</button>
+                  </form>
+                  <p className="form-error" id="formError"></p>
+                  <div className="chips-label">Try a sample</div>
+                  <div className="chips">
+                    <button className="chip" type="button" data-url="https://github.com">github.com</button>
+                    <button className="chip" type="button" data-url="https://paypal-secure-verify-account.tk">paypal-secure-verify-account.tk</button>
+                    <button className="chip" type="button" data-url="https://accounts-google-support.cf/login">accounts-google-support.cf</button>
+                    <button className="chip" type="button" data-url="https://mybank-online-update.xyz">mybank-online-update.xyz</button>
+                  </div>
+                </section>
 
-              <section className="panel results-panel hidden" id="resultsPanel">
-                <div className="results-grid">
-                  <div className="verdict-col" id="verdictCol">
-                    <div className="risk-ring-wrap">
-                      <svg viewBox="0 0 200 200">
-                        <circle className="ring-bg" cx="100" cy="100" r="90"></circle>
-                        <circle className="ring-fg" id="ringFg" cx="100" cy="100" r="90"></circle>
-                      </svg>
-                      <div className="ring-center">
-                        <div className="ring-score-row"><span className="ring-score" id="ringScore">0</span><span className="ring-percent">%</span></div>
-                        <div className="ring-caption">Risk score</div>
+                <section className="panel progress-panel hidden" id="progressPanel">
+                  <canvas id="radar"></canvas>
+                  <div className="scan-target-row">
+                    <span className="scan-target-label">Scanning:</span>
+                    <span className="scan-target-url" id="scanTargetUrl"></span>
+                  </div>
+                  <ul className="steps" id="stepsList"></ul>
+                </section>
+
+                <section className="panel results-panel hidden" id="resultsPanel">
+                  <div className="results-grid">
+                    <div className="verdict-col" id="verdictCol">
+                      <div className="risk-ring-wrap">
+                        <svg viewBox="0 0 200 200">
+                          <circle className="ring-bg" cx="100" cy="100" r="90"></circle>
+                          <circle className="ring-fg" id="ringFg" cx="100" cy="100" r="90"></circle>
+                        </svg>
+                        <div className="ring-center">
+                          <div className="ring-score-row"><span className="ring-score" id="ringScore">0</span><span className="ring-percent">%</span></div>
+                          <div className="ring-caption">Risk score</div>
+                        </div>
+                        <div className="stamp" id="stamp">Quarantined</div>
                       </div>
-                      <div className="stamp" id="stamp">Quarantined</div>
+                      <div className="verdict-label" id="verdictLabel">—</div>
+                      <div className="verdict-url" id="verdictUrl"></div>
+                      <button className="btn-secondary" id="rescanBtn">Scan another URL</button>
                     </div>
-                    <div className="verdict-label" id="verdictLabel">—</div>
-                    <div className="verdict-url" id="verdictUrl"></div>
-                    <button className="btn-secondary" id="rescanBtn">Scan another URL</button>
+                    <div className="explain-col">
+                      <div className="explain-header"><span className="dot"></span>AI Explanation</div>
+                      <div className="terminal" id="explainTerminal"></div>
+                      <div className="signal-rows" id="signalRows"></div>
+                    </div>
                   </div>
-                  <div className="explain-col">
-                    <div className="explain-header"><span className="dot"></span>AI Explanation</div>
-                    <div className="terminal" id="explainTerminal"></div>
-                    <div className="signal-rows" id="signalRows"></div>
-                  </div>
-                </div>
-              </section>
+                </section>
 
-              {/* ========== PHISHING LANDSCAPE DASHBOARD ========== */}
-              <section className="landscape-section">
-                <div className="landscape-header">
-                  <div className="left">
-                    <span className="dot"></span>GLOBAL PHISHING LANDSCAPE
+                {/* ========== PHISHING LANDSCAPE DASHBOARD ========== */}
+                <section className="landscape-section">
+                  <div className="landscape-header">
+                    <div className="left">
+                      <span className="dot"></span>GLOBAL PHISHING LANDSCAPE
+                    </div>
+                    <div>APWG Q1 2026 &amp; Check Point Research Q2 2026</div>
                   </div>
-                  <div>APWG Q1 2026 &amp; Check Point Research Q2 2026</div>
-                </div>
 
-                <div className="stats-row">
-                  <div className="stat-box">
-                    <div className="stat-val">971,181</div>
-                    <div className="stat-label">Phishing attacks reported to APWG in Q1 2026</div>
-                  </div>
-                  <div className="stat-box">
-                    <div className="stat-val cyan">+13.8%</div>
-                    <div className="stat-label">Rise in attack volume vs. the previous quarter</div>
-                  </div>
-                  <div className="stat-box">
-                    <div className="stat-val magenta">50%+</div>
-                    <div className="stat-label">Of all brand impersonation held by the top 5 brands</div>
-                  </div>
-                </div>
-
-                <div className="landscape-grid">
-                  <div className="brands-col">
-                    <div className="col-heading">MOST IMPERSONATED BRANDS · Q2 2026</div>
-                    <div className="brands-list">
-                      <div className="brand-row">
-                        <div className="brand-name">Microsoft</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '92%' }}></div></div>
-                        <div className="brand-val">23%</div>
-                      </div>
-                      <div className="brand-row">
-                        <div className="brand-name">LinkedIn</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '52%' }}></div></div>
-                        <div className="brand-val">13%</div>
-                      </div>
-                      <div className="brand-row">
-                        <div className="brand-name">Google</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '40%' }}></div></div>
-                        <div className="brand-val">10%</div>
-                      </div>
-                      <div className="brand-row">
-                        <div className="brand-name">Apple</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '32%' }}></div></div>
-                        <div className="brand-val">8%</div>
-                      </div>
-                      <div className="brand-row">
-                        <div className="brand-name">Amazon</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '28%' }}></div></div>
-                        <div className="brand-val">7%</div>
-                      </div>
-                      <div className="brand-row">
-                        <div className="brand-name">ChatGPT</div>
-                        <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '15%' }}></div></div>
-                        <div className="brand-val">New</div>
-                      </div>
+                  <div className="stats-row">
+                    <div className="stat-box">
+                      <div className="stat-val">971,181</div>
+                      <div className="stat-label">Phishing attacks reported to APWG in Q1 2026</div>
+                    </div>
+                    <div className="stat-box">
+                      <div className="stat-val cyan">+13.8%</div>
+                      <div className="stat-label">Rise in attack volume vs. the previous quarter</div>
+                    </div>
+                    <div className="stat-box">
+                      <div className="stat-val magenta">50%+</div>
+                      <div className="stat-label">Of all brand impersonation held by the top 5 brands</div>
                     </div>
                   </div>
 
-                  <div className="tech-col">
-                    <div className="col-heading">COMMON ATTACK TECHNIQUES</div>
-                    <div className="tech-list">
-                      <div className="tech-item">
-                        <div className="tech-title">Typosquatting</div>
-                        <div className="tech-desc">Registering misspelled or hyphenated variants of a brand&apos;s domain (e.g. amaz0n-billing.com) to catch mistyped or hurried clicks.</div>
+                  <div className="landscape-grid">
+                    <div className="brands-col">
+                      <div className="col-heading">MOST IMPERSONATED BRANDS · Q2 2026</div>
+                      <div className="brands-list">
+                        <div className="brand-row">
+                          <div className="brand-name">Microsoft</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '92%' }}></div></div>
+                          <div className="brand-val">23%</div>
+                        </div>
+                        <div className="brand-row">
+                          <div className="brand-name">LinkedIn</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '52%' }}></div></div>
+                          <div className="brand-val">13%</div>
+                        </div>
+                        <div className="brand-row">
+                          <div className="brand-name">Google</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '40%' }}></div></div>
+                          <div className="brand-val">10%</div>
+                        </div>
+                        <div className="brand-row">
+                          <div className="brand-name">Apple</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '32%' }}></div></div>
+                          <div className="brand-val">8%</div>
+                        </div>
+                        <div className="brand-row">
+                          <div className="brand-name">Amazon</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '28%' }}></div></div>
+                          <div className="brand-val">7%</div>
+                        </div>
+                        <div className="brand-row">
+                          <div className="brand-name">ChatGPT</div>
+                          <div className="brand-bar-track"><div className="brand-bar-fill" style={{ width: '15%' }}></div></div>
+                          <div className="brand-val">New</div>
+                        </div>
                       </div>
-                      <div className="tech-item">
-                        <div className="tech-title">Homograph / punycode spoofing</div>
-                        <div className="tech-desc">Using look-alike Unicode characters so a domain renders almost identically to the real one.</div>
-                      </div>
-                      <div className="tech-item">
-                        <div className="tech-title">Unauthorized logo &amp; brand use</div>
-                        <div className="tech-desc">Copying a brand&apos;s logo, colors and layout onto a fake login or payment page to build false trust.</div>
-                      </div>
-                      <div className="tech-item">
-                        <div className="tech-title">Disposable free-TLD hosting</div>
-                        <div className="tech-desc">Short-lived pages on cheap or free top-level domains (.tk, .xyz, .top) paired with free SSL certs.</div>
+                    </div>
+
+                    <div className="tech-col">
+                      <div className="col-heading">COMMON ATTACK TECHNIQUES</div>
+                      <div className="tech-list">
+                        <div className="tech-item">
+                          <div className="tech-title">Typosquatting</div>
+                          <div className="tech-desc">Registering misspelled or hyphenated variants of a brand&apos;s domain (e.g. amaz0n-billing.com) to catch mistyped or hurried clicks.</div>
+                        </div>
+                        <div className="tech-item">
+                          <div className="tech-title">Homograph / punycode spoofing</div>
+                          <div className="tech-desc">Using look-alike Unicode characters so a domain renders almost identically to the real one.</div>
+                        </div>
+                        <div className="tech-item">
+                          <div className="tech-title">Unauthorized logo &amp; brand use</div>
+                          <div className="tech-desc">Copying a brand&apos;s logo, colors and layout onto a fake login or payment page to build false trust.</div>
+                        </div>
+                        <div className="tech-item">
+                          <div className="tech-title">Disposable free-TLD hosting</div>
+                          <div className="tech-desc">Short-lived pages on cheap or free top-level domains (.tk, .xyz, .top) paired with free SSL certs.</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="landscape-footer">
-                  Figures reflect published third-party industry research (APWG Phishing Activity Trends Report, Q1 2026; Check Point Research Brand Phishing Report, Q2 2026) and are not a live feed of this workspace&apos;s own traffic.
-                </div>
+                  <div className="landscape-footer">
+                    Figures reflect published third-party industry research (APWG Phishing Activity Trends Report, Q1 2026; Check Point Research Brand Phishing Report, Q2 2026) and are not a live feed of this workspace&apos;s own traffic.
+                  </div>
+                </section>
               </section>
-            </section>
-          </main>
+            </main>
+          </div>
         </div>
       </div>
     </>
   );
 }
-
-
-
-
 
