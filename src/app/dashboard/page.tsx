@@ -21,6 +21,9 @@ export default function DashboardPage() {
   const [dateStr, setDateStr] = useState('TUE, AUG 18');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  const [vignetteOpacity, setVignetteOpacity] = useState(0);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
   // Line chart interactive hover state
   const [hoverPoint, setHoverPoint] = useState<{ x: number; y: number; value: number; label: string } | null>(null);
 
@@ -360,7 +363,7 @@ export default function DashboardPage() {
       `}</style>
 
       {/* Verbatim Dashboard Structure */}
-      <div className="app-shell">
+      <div className="vignette" id="vignette" style={{ opacity: vignetteOpacity }}></div>`n`n      <div className="app-shell">
         <Sidebar activeRoute="dashboard" />
 
         <div className="shell-main">
@@ -417,9 +420,9 @@ export default function DashboardPage() {
               <div className="live-pill"><span className="p"></span>Live feed connected</div>
             </div>
 
-            <div className="grid">
+            <div className={`grid ${hoveredCard ? "has-hover" : ""}`} onMouseLeave={() => setHoveredCard(null)}>
               {/* Stat Card 1: Scans Today */}
-              <div className="stat-card" data-tone="cyan">
+              <div className={`stat-card ${hoveredCard === "stat1" ? "is-hovered" : ""}`} data-tone="cyan" onMouseEnter={() => setHoveredCard("stat1")}>
                 <div className="stat-top">
                   <div className="stat-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3" /><path d="M12 2v3M12 19v3M2 12h3M19 12h3" /></svg>
@@ -435,7 +438,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Stat Card 2: Threats Blocked */}
-              <div className="stat-card" data-tone="cyan">
+              <div className={`stat-card ${hoveredCard === "stat2" ? "is-hovered" : ""}`} data-tone="cyan" onMouseEnter={() => setHoveredCard("stat2")}>
                 <div className="stat-top">
                   <div className="stat-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /></svg>
@@ -451,7 +454,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Stat Card 3: Phishing Detected */}
-              <div className="stat-card" data-tone="magenta">
+              <div className={`stat-card ${hoveredCard === "stat3" ? "is-hovered" : ""}`} data-tone="magenta" onMouseEnter={() => setHoveredCard("stat3")}>
                 <div className="stat-top">
                   <div className="stat-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
@@ -467,7 +470,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Stat Card 4: API Health */}
-              <div className="stat-card" data-tone="cyan">
+              <div className={`stat-card ${hoveredCard === "stat4" ? "is-hovered" : ""}`} data-tone="cyan" onMouseEnter={() => setHoveredCard("stat4")}>
                 <div className="stat-top">
                   <div className="stat-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
@@ -483,7 +486,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Traffic Overview Line Chart */}
-              <div className="panel chart-panel">
+              <div className={`panel chart-panel reveal-target ${hoveredCard === "panel1" ? "is-hovered" : ""}`} onMouseEnter={() => setHoveredCard("panel1")}>
                 <div className="panel-head">
                   <div>
                     <div className="panel-title">Traffic</div>
@@ -577,7 +580,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Threat Distribution Donut Panel */}
-              <div className="panel donut-panel">
+              <div className={`panel donut-panel reveal-target ${hoveredCard === "panel2" ? "is-hovered" : ""}`} onMouseEnter={() => setHoveredCard("panel2")}>
                 <div className="panel-head">
                   <div>
                     <div className="panel-title">Threat Distribution</div>
@@ -626,7 +629,7 @@ export default function DashboardPage() {
               </div>
 
               {/* Live Telemetry Table */}
-              <div className="panel table-panel">
+              <div className={`panel table-panel reveal-target ${hoveredCard === "panel3" ? "is-hovered" : ""}`} onMouseEnter={() => setHoveredCard("panel3")}>
                 <div className="panel-head">
                   <div>
                     <div className="panel-title">Recent Threats</div>
@@ -686,5 +689,7 @@ export default function DashboardPage() {
     </>
   );
 }
+
+
 
 
