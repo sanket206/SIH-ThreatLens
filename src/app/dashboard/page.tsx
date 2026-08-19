@@ -7,9 +7,9 @@ import TopbarRight from '@/components/TopbarRight';
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [scansCount, setScansCount] = useState(128523);
-  const [blockedCount, setBlockedCount] = useState(1287);
-  const [phishCount, setPhishCount] = useState(344);
+  const [scansCount, setScansCount] = useState(0);
+  const [blockedCount, setBlockedCount] = useState(0);
+  const [phishCount, setPhishCount] = useState(0);
   const [latencyMs, setLatencyMs] = useState(83);
 
   const [activeRange, setActiveRange] = useState('24h');
@@ -53,30 +53,6 @@ export default function DashboardPage() {
       }
     };
     loadStats();
-
-    // Live ticker simulation
-            const ticker = setInterval(() => {
-      setScansCount((prev) => prev + Math.floor(Math.random() * 3) + 1);
-      if (Math.random() > 0.7) setBlockedCount((prev) => prev + 1);
-      if (Math.random() > 0.85) setPhishCount((prev) => prev + 1);
-      setLatencyMs(78 + Math.floor(Math.random() * 12));
-
-      if (Math.random() > 0.5) {
-        const newRow = {
-          id: Math.random().toString(36).slice(2),
-          overallScore: Math.floor(Math.random() * 100),
-          verdict: ['QUARANTINED', 'PHISHING', 'SAFE'][Math.floor(Math.random() * 3)],
-          ipAddress: `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
-          domain: `target-${Math.floor(Math.random()*100)}.com`,
-          createdAt: new Date().toISOString()
-        };
-        setRecentScans((prev) => [newRow, ...prev].slice(0, 8));
-      }
-    }, 3200);
-
-    return () => {
-            clearInterval(ticker);
-    };
   }, []);
 
   // Default fallback mock telemetry matching original table
@@ -657,6 +633,9 @@ export default function DashboardPage() {
     </>
   );
 }
+
+
+
 
 
 

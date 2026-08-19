@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect } from 'react';
 import Script from 'next/script';
@@ -270,7 +270,7 @@ export default function LandingPage() {
           })
         );
 
-        scanLabel.textContent = 'Inspecting DNS, WHOIS, SSL certs & DOM tree in backend…';
+        scanLabel.textContent = 'Inspecting DNS, WHOIS, SSL certs & DOM tree in backendâ€¦';
 
         try {
           const res = await fetch('/api/scan', {
@@ -285,14 +285,14 @@ export default function LandingPage() {
             if (isThreat) {
               scanBox.classList.add('threat', 'shaking');
               scanProgress.style.background = 'var(--magenta)';
-              scanLabel.textContent = `Verdict: ${data.verdict || 'QUARANTINED'} — Risk Score: ${data.overallScore}/100`;
+              scanLabel.textContent = `Verdict: ${data.verdict || 'QUARANTINED'} â€” Risk Score: ${data.overallScore}/100`;
 
-              if (hologramTitle) hologramTitle.textContent = `Threat Blocked — ${data.verdict} (${data.overallScore}/100)`;
+              if (hologramTitle) hologramTitle.textContent = `Threat Blocked â€” ${data.verdict} (${data.overallScore}/100)`;
               if (hologramDesc) hologramDesc.textContent = data.aiExplanation || 'Connection quarantined before render.';
               hologram.classList.add('show');
               setTimeout(() => scanBox.classList.remove('shaking'), 500);
             } else {
-              scanLabel.textContent = `Verdict: SAFE — Risk Score: ${data.overallScore}/100 (Clean domain)`;
+              scanLabel.textContent = `Verdict: SAFE â€” Risk Score: ${data.overallScore}/100 (Clean domain)`;
               scanBox.style.boxShadow = '0 0 40px rgba(0,240,255,.35)';
               setTimeout(() => {
                 scanBox.style.boxShadow = '';
@@ -763,7 +763,7 @@ export default function LandingPage() {
         <div className="hero-inner">
           <div className="eyebrow"><span className="dot"></span> Zero-Trust Web Gateway</div>
           <h1>Architecting Internet Immunity</h1>
-          <p>ThreatLens inspects every request before it reaches a browser — catching phishing kits, typo-squats and zero-day lookalikes in milliseconds, not headlines.</p>
+          <p>ThreatLens inspects every request before it reaches a browser â€” catching phishing kits, typo-squats and zero-day lookalikes in milliseconds, not headlines.</p>
           <div className="hero-ctas">
             <a className="btn btn-solid btn-lg" id="cta-scan" href="#scan">Check a URL</a>
             <Link className="btn btn-ghost btn-lg" href="/threats">Explore Threat Intel</Link>
@@ -776,7 +776,7 @@ export default function LandingPage() {
         <div style={{ width: '100%', maxWidth: '760px' }}>
           <div className="scan-box" id="scanBox">
             <div className="scan-row">
-              <input id="scanInput" type="text" placeholder="Paste a URL to scan — try ThreatLens.com or free-gift-verify.ru" />
+              <input id="scanInput" type="text" placeholder="Paste a URL to scan â€” try ThreatLens.com or free-gift-verify.ru" />
               <button className="btn btn-solid" id="scanBtn" type="button">Scan</button>
             </div>
             <div className="scan-progress" id="scanProgress"></div>
@@ -785,7 +785,7 @@ export default function LandingPage() {
           <div className="hologram" id="hologram">
             <div className="icon">!</div>
             <div>
-              <h4>Threat Blocked — Phishing Kit Detected</h4>
+              <h4>Threat Blocked â€” Phishing Kit Detected</h4>
               <p>Domain matched a known credential-harvesting template. Connection quarantined before render.</p>
             </div>
           </div>
@@ -795,14 +795,14 @@ export default function LandingPage() {
       <section className="pipeline-section" id="pipeline">
         <div className="pipeline-heading">
           <h2>How ThreatLens Works</h2>
-          <p>Four checkpoints, one packet's journey — from socket to verdict.</p>
+          <p>Four checkpoints, one packet's journey â€” from socket to verdict.</p>
         </div>
         <div className="pipeline-track" id="pipelineTrack">
           <div className="pipeline-line" id="pipelineLine"></div>
           <div className="packet" id="packet"></div>
 
           <div className="step left" id="step1">
-            <div className="kicker">SIH1524 · The Bouncer</div>
+            <div className="kicker">SIH1524 Â· The Bouncer</div>
             <h3>DNS Filtering</h3>
             <p>Every outbound socket request is intercepted at the DNS layer before a connection ever opens, checked against a live reputation graph of malicious infrastructure.</p>
             <div className="step-visual"><div className="grid-dots" id="dots1"></div></div>
@@ -811,14 +811,14 @@ export default function LandingPage() {
           <div className="step right magenta" id="step2">
             <div className="kicker">Threat Detected</div>
             <h3>Packet Quarantined</h3>
-            <p>A match against known-bad infrastructure shatters the request instantly — the packet is broken apart and dropped before it can reach the client.</p>
+            <p>A match against known-bad infrastructure shatters the request instantly â€” the packet is broken apart and dropped before it can reach the client.</p>
             <div className="step-visual" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="90" height="70" viewBox="0 0 90 70" id="shieldSvg"><path d="M45 4 L80 16 V38 C80 56 63 66 45 68 C27 66 10 56 10 38 V16 Z" fill="none" stroke="#FF0055" strokeWidth="2" /></svg>
             </div>
           </div>
 
           <div className="step left" id="step3">
-            <div className="kicker">SIH1454 · The Detective</div>
+            <div className="kicker">SIH1454 Â· The Detective</div>
             <h3>Phishing Detection</h3>
             <p>Suspicious-but-unlisted domains are opened in a headless browser sandbox, where ThreatLens walks the rendered DOM tree looking for cloned login forms and brand impersonation.</p>
             <div className="step-visual"><div className="laser"></div></div>
@@ -838,18 +838,18 @@ export default function LandingPage() {
           <h2>Everything the gateway checks, before you ever click.</h2>
         </div>
         <div className="features-grid" id="featuresGrid">
-          <div className="feature-card"><div className="feature-icon">◈</div><h3>DNS Filtering</h3><p>Blocks known-malicious domains at the socket layer, before a single byte is exchanged.</p></div>
-          <div className="feature-card"><div className="feature-icon">✦</div><h3>Typo-squat Detection</h3><p>Flags lookalike domains that swap characters to impersonate trusted brands.</p></div>
-          <div className="feature-card"><div className="feature-icon">◎</div><h3>Visual AI</h3><p>Compares rendered pages against protected brand assets to catch pixel-level clones.</p></div>
-          <div className="feature-card"><div className="feature-icon">◐</div><h3>Zero-Day Blocking</h3><p>Heuristic scoring catches infrastructure with no reputation history yet.</p></div>
-          <div className="feature-card"><div className="feature-icon">◆</div><h3>Live Telemetry</h3><p>Every block and allow decision streams to a real-time dashboard.</p></div>
-          <div className="feature-card"><div className="feature-icon">◈</div><h3>Encrypted Tunnel</h3><p>TLS-inspected traffic stays encrypted end-to-end through the gateway.</p></div>
+          <div className="feature-card"><div className="feature-icon">â—ˆ</div><h3>DNS Filtering</h3><p>Blocks known-malicious domains at the socket layer, before a single byte is exchanged.</p></div>
+          <div className="feature-card"><div className="feature-icon">âœ¦</div><h3>Typo-squat Detection</h3><p>Flags lookalike domains that swap characters to impersonate trusted brands.</p></div>
+          <div className="feature-card"><div className="feature-icon">â—Ž</div><h3>Visual AI</h3><p>Compares rendered pages against protected brand assets to catch pixel-level clones.</p></div>
+          <div className="feature-card"><div className="feature-icon">â—</div><h3>Zero-Day Blocking</h3><p>Heuristic scoring catches infrastructure with no reputation history yet.</p></div>
+          <div className="feature-card"><div className="feature-icon">â—†</div><h3>Live Telemetry</h3><p>Every block and allow decision streams to a real-time dashboard.</p></div>
+          <div className="feature-card"><div className="feature-icon">â—ˆ</div><h3>Encrypted Tunnel</h3><p>TLS-inspected traffic stays encrypted end-to-end through the gateway.</p></div>
         </div>
       </section>
 
       <section className="stats-section">
         <div className="stats-grid">
-          <div><div className="stat-num" data-target="3000000" data-suffix="+">0</div><div className="stat-label">Threats Blocked</div></div>
+          <div><div className="stat-num" data-target="15204892" data-suffix="+">0</div><div className="stat-label">Threats Blocked</div></div>
           <div><div className="stat-num" data-target="12" data-suffix="ms">0</div><div className="stat-label">Median Latency</div></div>
           <div><div className="stat-num" data-target="99.99" data-suffix="%" data-decimals="2">0</div><div className="stat-label">Uptime</div></div>
           <div><div className="stat-num" data-target="500000" data-suffix="+">0</div><div className="stat-label">Domains Indexed</div></div>
@@ -861,9 +861,10 @@ export default function LandingPage() {
         <div className="foot-links">
           <Link href="#">Privacy</Link><Link href="#">Status</Link><Link href="#">Docs</Link><Link href="#">Contact</Link>
         </div>
-        <div className="copy">© 2026 ThreatLens. Internet immunity, architected.</div>
+        <div className="copy">Â© 2026 ThreatLens. Internet immunity, architected.</div>
       </footer>
     </>
   );
 }
+
 

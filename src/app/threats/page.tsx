@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import TopbarRight from '@/components/TopbarRight';
-import AttackHeatmap from '@/components/AttackHeatmap';
 
 export default function ThreatIntelPage() {
   const router = useRouter();
@@ -132,12 +131,9 @@ export default function ThreatIntelPage() {
             <main className="main">
               <div style={{ marginBottom: '24px' }}>
                 <div style={{ fontFamily: 'var(--font-mono)', fontSize: '10.5px', color: 'var(--cyan)', textTransform: 'uppercase' }}>Threat Intelligence</div>
-                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '26px', margin: 0 }}>Global Attack Heat Map &amp; Active Campaigns</h1>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '26px', margin: 0 }}>Active Campaigns</h1>
                 <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: '6px 0 0' }}>Real-time host density heat zones, active phishing infrastructure, and brand-mimicry clusters observed in the last 24h.</p>
               </div>
-
-              {/* Global Cyber Attack Heat Map */}
-              <AttackHeatmap />
 
               <div className="stat-grid">
                 <div className="stat-card">
@@ -192,6 +188,8 @@ export default function ThreatIntelPage() {
     </>
   );
 }
+
+
 
 
 

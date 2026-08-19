@@ -15,12 +15,12 @@ export async function GET() {
     });
 
     const stats = {
-      scansToday: totalScans > 0 ? totalScans + 1420 : 3482,
-      threatsBlocked: threatsBlocked > 0 ? threatsBlocked + 980 : 1245,
-      phishingDetected: phishingDetected > 0 ? phishingDetected + 420 : 612,
+      scansToday: totalScans,
+      threatsBlocked: threatsBlocked,
+      phishingDetected: phishingDetected,
       apiHealth: '99.98%',
       avgLatencyMs: 12,
-      safeScans: totalSafe > 0 ? totalSafe + 2200 : 2870,
+      safeScans: totalSafe,
     };
 
     return NextResponse.json({ success: true, stats });
