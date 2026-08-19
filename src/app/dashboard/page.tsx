@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -71,11 +71,23 @@ export default function DashboardPage() {
     loadStats();
 
     // Live ticker simulation
-    const ticker = setInterval(() => {
+            const ticker = setInterval(() => {
       setScansCount((prev) => prev + Math.floor(Math.random() * 3) + 1);
       if (Math.random() > 0.7) setBlockedCount((prev) => prev + 1);
       if (Math.random() > 0.85) setPhishCount((prev) => prev + 1);
       setLatencyMs(78 + Math.floor(Math.random() * 12));
+
+      if (Math.random() > 0.5) {
+        const newRow = {
+          id: Math.random().toString(36).slice(2),
+          overallScore: Math.floor(Math.random() * 100),
+          verdict: ['QUARANTINED', 'PHISHING', 'SAFE'][Math.floor(Math.random() * 3)],
+          ipAddress: `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+          domain: `target-${Math.floor(Math.random()*100)}.com`,
+          createdAt: new Date().toISOString()
+        };
+        setRecentScans((prev) => [newRow, ...prev].slice(0, 8));
+      }
     }, 3200);
 
     return () => {
@@ -355,11 +367,16 @@ export default function DashboardPage() {
         thead th { text-align: left; font-size: 10.5px; text-transform: uppercase; color: var(--text-faint); padding: 10px 12px; border-bottom: 1px solid var(--glass-border); }
         tbody td { padding: 12px; font-size: 12.5px; border-bottom: 1px solid rgba(255,255,255,0.06); }
 
-        .sev-badge { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; }
-        .sev-badge.critical { color: var(--magenta); background: rgba(var(--magenta-rgb), 0.12); border: 1px solid rgba(var(--magenta-rgb), 0.3); }
-        .sev-badge.high { color: var(--magenta-soft); background: rgba(var(--magenta-soft-rgb), 0.1); border: 1px solid rgba(var(--magenta-soft-rgb), 0.28); }
-        .sev-badge.medium { color: var(--cyan); background: rgba(var(--cyan-rgb), 0.1); border: 1px solid rgba(var(--cyan-rgb), 0.28); }
-        .sev-badge.low { color: var(--neutral); background: rgba(154,160,174, 0.1); border: 1px solid rgba(154,160,174, 0.25); }
+        .sev-badge { font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; padding: 4px 9px; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid transparent; }
+        .sev-badge .d { width: 6px; height: 6px; border-radius: 50%; }
+        .sev-badge.critical { color: var(--magenta); background: rgba(var(--magenta-rgb), 0.12); border-color: rgba(var(--magenta-rgb), 0.3); }
+        .sev-badge.critical .d { background: var(--magenta); box-shadow: 0 0 6px rgba(var(--magenta-rgb), 0.8); }
+        .sev-badge.high { color: var(--magenta-soft); background: rgba(var(--magenta-soft-rgb), 0.1); border-color: rgba(var(--magenta-soft-rgb), 0.28); }
+        .sev-badge.high .d { background: var(--magenta-soft); }
+        .sev-badge.medium { color: var(--cyan); background: rgba(var(--cyan-rgb), 0.1); border-color: rgba(var(--cyan-rgb), 0.28); }
+        .sev-badge.medium .d { background: var(--cyan); }
+        .sev-badge.low { color: var(--neutral); background: rgba(154,160,174, 0.1); border-color: rgba(154,160,174, 0.25); }
+        .sev-badge.low .d { background: var(--neutral); }
       `}</style>
 
       {/* Verbatim Dashboard Structure */}
@@ -667,7 +684,7 @@ export default function DashboardPage() {
                   <tbody>
                     {filteredRows.map((row) => (
                       <tr key={row.id}>
-                        <td><span className={`sev-badge ${row.sev}`}>{row.sev.toUpperCase()}</span></td>
+                        <td><span className={`sev-badge ${row.sev}`}><span className="d"></span>{row.sev.toUpperCase()}</span></td>
                         <td style={{ fontWeight: 500 }}>{row.type}</td>
                         <td style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-dim)' }}>{row.ip}</td>
                         <td style={{ fontFamily: 'var(--font-mono)', color: '#00F0FF', fontWeight: 500 }}>{row.target}</td>
@@ -689,6 +706,10 @@ export default function DashboardPage() {
     </>
   );
 }
+
+
+
+
 
 
 
